@@ -8,6 +8,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework import mixins,generics
 from rest_framework import viewsets
+from .paginators import CustomPagination
 
 
 # Create your views here.
@@ -153,6 +154,7 @@ class ProductGenericDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 class ProductsViewset(viewsets.ViewSet):
     lookup_field = 'id'
+    
    
     def list(self,request):
         product = Product.objects.all()
@@ -183,12 +185,14 @@ class ProductsViewset(viewsets.ViewSet):
     def delete(self,request, id = None):
         products = get_object_or_404(Product,id = id )
         products.delete()
-       return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 """
+
        
 class ProductsModelViewset(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    pagination_class = CustomPagination
 
 
 
